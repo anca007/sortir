@@ -1,0 +1,22 @@
+<nav>
+    <ul>
+        {% if app.user %}
+            {#https://codepen.io/jhancock532/pen/GRZrLwY #}
+            <div class="background-one">
+                <div class="link-container">
+                    <a class="link-one" href="{{ path('activity_home', {'page': 1}) }}" title="Accueil">Accueil</a>
+                </div>
+            </div>
+            <div class="background-two link-container">
+
+                <a class="link-two" href="{{ path('activity_create') }}" title="Créer une sortie">Créer une sortie</a>
+
+            </div>
+            <li><a href="{{ path('user_edit') }}" title="Modifier mon profil">Modifier mon profil</a></li>
+            <li><a href="{{ path('app_logout') }}" title="Se déconnecter">Se déconnecter ({{ app.user.firstname }})</a>
+            </li>
+        {% else %}
+            <li><a href="{{ path('app_login') }}" title="Se connecter">Se connecter</a></li>
+        {% endif %}
+    </ul>
+</nav>

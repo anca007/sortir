@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2>Annulation de sortie !</h2>
+
+    <div>
+        <div>Nom de la sortie : {{ activity.name }}</div>
+        <div>Date de sortie : {{ activity.startDate | date('d/m/Y') }}</div>
+        <div>Campus : {{ activity.campus.name }}</div>
+        <div>Lieu : {{ activity.location }}</div>
+    </div>
+
+    <form action="" method="POST">
+        <label for="cancel_reason">Motif</label><textarea name="cancel_reason" id="cancel_reason" cols="30"
+                                                          rows="10"></textarea>
+        <div class="flex_div">
+            <button type="submit">Enregistrer</button>
+            <button type="button" onclick="history.back()">Annuler</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

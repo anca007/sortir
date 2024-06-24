@@ -1,0 +1,12 @@
+{# permet d'inclure et faire hériter un fichier twig #}
+{% embed  'modal/modal.html.twig' with {modal_id : 'activityEditModal'} %}
+    {% block modalTitle %}
+        Editer sortie
+    {% endblock %}
+    {% block modalBody %}
+
+    {% endblock %}
+    {% block modalValidationbutton %}
+        <button type="button" class="btn btn-primary" id="activityEdit">Modifier</button>
+    {% endblock %}
+{% endembed %}

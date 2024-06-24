@@ -1,0 +1,12 @@
+{# permet d'inclure et faire hériter un fichier twig #}
+{% embed  'modal/modal.html.twig' with {modal_id : 'locationModal'} %}
+    {% block modalTitle %}
+        Nouveau lieu
+    {% endblock %}
+    {% block modalBody %}
+        {% include 'views/forms/locationForm.html.twig' %}
+    {% endblock %}
+    {% block modalValidationbutton %}
+        <button type="button" class="btn btn-primary" id="locationCreate">Créer</button>
+    {% endblock %}
+{% endembed %}

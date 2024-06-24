@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="flex_div">
+        <div>
+            <img src="{{ asset('uploads/images/profil/' ~ app.user.photo) }}" alt="Photo de profil">
+        </div>
+        <div>
+            {{ form_start(userForm) }}
+            {{ form_widget(userForm) }}
+            <button>Enregistrer</button>
+            {{ form_end(userForm) }}
+        </div>
+
+    </div>
+
+{% endblock %}
+
+

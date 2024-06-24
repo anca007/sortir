@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Modifier une sortie
+{% endblock %}
+
+{% block body %}
+
+    {% include 'modal/activity/activityModal.html.twig' %}
+
+    {% embed 'views/forms/activityForm.html.twig' %}
+        {% block validationButtonLabel %}
+            Modifier la sortie !
+        {% endblock %}
+        {% block publishButtonLabel %}
+            Publier la sortie !
+        {% endblock %}
+    {% endembed %}
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{{ asset('js/activityEvents.js') }}"></script>
+{% endblock %}

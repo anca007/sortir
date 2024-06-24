@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Détail de la sortie
+{% endblock %}
+
+{% block body %}
+
+    <div class="activity_detail_bloc">
+        <div id="map"></div>
+        <div id="activity_detail">
+
+            <h3>{{ activity.name }}
+                {% if is_granted("ACTIVITY_EDIT", activity) %}
+                    <a href="{{ path('activity_edit', {'activity': activity.id}) }}">
+                        <img alt="Modifier la sortie" title="Modifier la sortie" class="action_icon" src="{{ asset('img/edit.png') }}">
+                    </a>
+                {% endif %}
+                {% if is_granted("ACTIVITY_REGISTER", activity) %}
+                    <a href="{{ path('activity_register', {'id': activity.id}) }}">
+                        <img alt="s'inscrire" title="s'inscrire" class="action_icon"
+                             src="{{ asset('img/subscribe.png') }}">
+                    </a>
+                {% endif %}
+                {% if is_granted("ACTIVITY_QUIT", activity) %}
+                    <a href="{{ path('activity_unsubscribe', {'id': activity.id}) }}">
+                        <img alt="se désinscrire" title="se désister" class="action_icon"
+                             src="{{ asset('img/unsubscribe.png') }}">
+                    </a>
+                {% endif %}
+                {% if is_granted("ACTIVITY_CANCEL", activity) %}
+                    <a href="{{ path('activity_cancel', {'id': activity.id}) }}">
+                        <img alt="Annuler la sortie" title="Annuler la sortie" class="action_icon" src="{{ asset('img/delete.png') }}">
+                    </a>
+                {% endif %}
+                {% if activity.state.stateCode == constant('App\\Entity\\State::CANCELED') %}
+                    <mark>ANNULÉ</mark>
+                {% endif %}
+            </h3>
+            <label>Où</label>
+            <div class="detail_border_box">
+                <div class="flex_div">
+                    <label>Ville : </label>
+                    <div>{{ activity.location.city.name }}</div>
+                </div>
+                <div class="flex_div">
+                    <label>Adresse : </label>
+                    <div>{{ activity.location.street }}</div>
+                </div>
+            </div>
+            <label>Quand ?</label>
+            <div class="detail_border_box">
+                <div class="flex_div">
+                    <label>Début : </label>
+                    <div>{{ activity.startDate|date('d/m/Y h:i') }}</div>
+                </div>
+                <div class="flex_div">
+                    <label>Durée : </label>
+                    <div>{{ activity.duration }} minutes</div>
+                </div>
+                <div class="flex_div">
+                    <label>Date limite d'inscription : </label>
+                    <div>{{ activity.dateLimitForRegistration|date('d/m/Y') }}</div>
+                </div>
+            </div>
+            <label>Comment ?</label>
+            <div class="detail_border_box">
+                <div class="flex_div">
+                    <label>Nombre de participants : </label>
+                    <div>{{ activity.participants|length }}/{{ activity.maxRegistrationNumber }}</div>
+                </div>
+                <div class="flex_div">
+                    <label>Description : </label>
+                    <div>{{ activity.description }}</div>
+                </div>
+                <div class="flex_div">
+                    <label>Organisateur : </label>
+                    <div>{{ activity.organiser.firstname }} {{ activity.organiser.lastname }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if activity.participants|length > 0 %}
+        <div class="activity_participant">
+            <h3>Liste des participants</h3>
+            <div>
+                {% for participant in activity.participants %}
+                    <div>{{ participant.firstname }} {{ participant.lastname }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+
+{% block extrajs %}
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnL0R57xn7FQg6DCT0uKehQ6prVPuzxb4&callback=initMap">
+    </script>
+    <script>
+
+        function initMap() {
+
+            let map = '';
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: {{ activity.location.latitude }}, lng: {{ activity.location.longitude }}},
+                zoom: 15
+            });
+
+            const svgMarker = {
+                path: "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+                fillColor: "green",
+                fillOpacity: 0.6,
+                strokeWeight: 0,
+                rotation: 0,
+                scale: 2,
+                anchor: new google.maps.Point(15, 30),
+            };
+
+            const marker = new google.maps.Marker({
+                position: {lat: {{ activity.location.latitude }}, lng: {{ activity.location.longitude }}},
+                map: map,
+                icon: svgMarker
+            });
+        }
+
+    </script>
+{% endblock %}

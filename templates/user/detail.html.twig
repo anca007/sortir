@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+    <h1>Informations de l'utilisateur {{ user.email }}</h1>
+
+    <div>Email : {{ user.email }}</div>
+    <div>Prénom : {{ user.firstname }}</div>
+    <div>Nom : {{ user.lastname }}</div>
+    <div>Campus :  {{ user.campus.name }}</div>
+    <div>Téléphone : {{ user.phone }}</div>
+
+
+{% endblock %}
+

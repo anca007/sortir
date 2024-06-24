@@ -1,0 +1,24 @@
+<div class="flex_div">
+    <div>
+        {{ form_start(activityForm) }}
+        {{ form_row(activityForm.campus)}}
+        {{ form_row(activityForm.name) }}
+        {{ form_row(activityForm.startDate) }}
+        {{ form_row(activityForm.dateLimitForRegistration) }}
+        {{ form_row(activityForm.duration) }}
+        {{ form_row(activityForm.maxRegistrationNumber) }}
+        {{ form_row(activityForm.description) }}
+    </div>
+    <div>
+        {{ form_row(activityForm.city, {'attr' : {'data-url': path('activity_get_locations')}}) }}
+        <div class="flex_div">
+            {{ form_row(activityForm.location) }}
+            <button type="button" id="openLocationModal" data-toggle="modal" data-target="#locationModal"
+                    class="">+
+            </button>
+        </div>
+    </div>
+</div>
+<button class="" name="save" value="validate">{% block validationButtonLabel %}{% endblock %}</button>
+<button class="" name="save" value="publish">{% block publishButtonLabel %}{% endblock %}</button>
+{{ form_end(activityForm) }}

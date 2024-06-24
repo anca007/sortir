@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <section>
+        {{ form_start(searchForm) }}
+        <div class="flex_div" id="searchBlock">
+            <div>
+                {{ form_row(searchForm.campus) }}
+                {{ form_row(searchForm.name) }}
+                <div class="flex_div">
+                    {{ form_row(searchForm.startDate) }}
+                    {{ form_row(searchForm.endDate) }}
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    {{ form_widget(searchForm.organiser) }}
+                    {{ form_label(searchForm.organiser) }}
+                </div>
+                <div>
+                    {{ form_widget(searchForm.isParticipant) }}
+                    {{ form_label(searchForm.isParticipant) }}
+                </div>
+                <div>
+                    {{ form_widget(searchForm.isNotParticipant) }}
+                    {{ form_label(searchForm.isNotParticipant) }}
+                </div>
+                <div>
+                    {{ form_widget(searchForm.oldActivity) }}
+                    {{ form_label(searchForm.oldActivity) }}
+                </div>
+
+            </div>
+            <div>
+                <button name="searchActivityButton">Rechercher</button>
+            </div>
+        </div>
+        {{ form_end(searchForm) }}
+    </section>
+    <section class="table-wrapper">
+        <div class="flex_div flex_between">
+            {% if currentPage > 1 %}
+                <a class="link_button"
+                   href="{{ path('activity_home', {'page' : currentPage - 1, 'searchActivity' : app.request.query.get('searchActivity')}) }}">Page
+                    précedente</a>
+            {% endif %}
+            {% if currentPage < maxPage %}
+                {% if currentPage == 1 %}
+                    <div></div>
+                {% endif %}
+                <a class="link_button"
+                   href="{{ path('activity_home', {'page' : currentPage + 1, 'searchActivity': app.request.query.get('searchActivity')}) }}">Page
+                    suivante</a>
+            {% endif %}
+        </div>
+        {% if activities|length > 0 %}
+
+            <table class="fl-table">
+                <thead>
+                <tr>
+                    <th>Nom de la sortie</th>
+                    <th>Date de la sortie</th>
+                    <th>Clôture</th>
+                    <th>Inscrits/places</th>
+                    <th>Etat</th>
+                    <th>Inscrit</th>
+                    <th>Organisateur</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for activity in activities %}
+                    <tr>
+                        <td><a href="{{ path('activity_detail', {'id': activity.id}) }}">{{ activity.name |nl2br }}</a>
+                            {#                <button class="activity-ajax-edit" data-url="{{ path('activity_ajax_edit') }}" #}
+                            {#                        data-activity_id="{{ activity.id }}" data-toggle="modal" data-target="#activityEditModal">Modifier Ajax #}
+                            {#                </button> #}
+                        </td>
+                        <td>{{ activity.startDate | date('Y-m-d') }}</td>
+                        <td>{{ activity.dateLimitForRegistration | date ('Y-m-d') }}</td>
+                        <td>{{ activity.participants | length }} / {{ activity.maxRegistrationNumber }}</td>
+                        <td>{{ activity.state.label }}</td>
+                        <td>
+                            {% if app.user in activity.participants %}
+                                X
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ path('user_detail', {'id': activity.organiser.id}) }}">{{ activity.organiser.firstname }} {{ activity.organiser.lastname }}</a></td>
+                        <td>
+                            <div class="flex_div">
+                                <div>
+                                    {% if is_granted('ACTIVITY_REGISTER', activity) %}
+                                        <a href="{{ path('activity_register', {'id': activity.id}) }}">
+                                            <img alt="s'inscrire" title="s'inscrire" class="action_icon"
+                                                 src="{{ asset('img/subscribe.png') }}">
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if is_granted('ACTIVITY_QUIT', activity) %}
+                                        <a href="{{ path('activity_unsubscribe', {'id': activity.id}) }}">
+                                            <img alt="se désinscrire" title="se désister" class="action_icon"
+                                                 src="{{ asset('img/unsubscribe.png') }}">
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if is_granted('ACTIVITY_EDIT', activity) %}
+                                        <a href="{{ path('activity_edit', {'activity': activity.id}) }}">
+                                            <img alt="Modifier la sortie" title="Modifier la sortie" class="action_icon"
+                                                 src="{{ asset('img/edit.png') }}">
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if is_granted('ACTIVITY_CANCEL', activity) %}
+                                        <a href="{{ path('activity_cancel', {'id': activity.id}) }}">
+                                            <img alt="Annuler la sortie" title="Annuler la sortie" class="action_icon"
+                                                 src="{{ asset('img/delete.png') }}">
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            Aucune sortie disponible
+        {% endif %}
+        <p>{{ maxActivities }} résultats</p>
+    </section>
+
+    {% include 'views/forms/activityEditAjaxModal.html.twig' %}
+
+{% endblock %}
+
+    {% block title %}
+        {{ parent() }} | Home
+    {% endblock %}
+
+{% block extrajs %}
+    <script>
+
+        const getActivityForm = function () {
+            fetch($(this).data('url'), {
+                method: 'POST',
+                body: JSON.stringify({'activity_id': $(this).data('activity_id')})
+            })
+                .then(function (response) {
+                    return response.text();
+                }).then(function (data) {
+                $('.modal-body').empty();
+                $('.modal-body').append(data);
+
+            })
+
+        }
+
+        const init = function () {
+            $('.activity-ajax-edit').each(function (idx, button) {
+                $(this).on('click', getActivityForm);
+            });
+        }
+
+
+        window.onload = init;
+    </script>
+{% endblock %}

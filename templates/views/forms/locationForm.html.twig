@@ -1,0 +1,11 @@
+{{ form_start(locationForm, {'attr': {'id': 'locationForm'}}) }}
+{{ form_row(locationForm.zipCode, {'attr': {'data-url': path('activity_get_cities')}}) }}
+{{ form_row(locationForm.city, {'attr': {'data-url': path('activity_get_location')}}) }}
+<div class="flex_div">
+    {{ form_row(locationForm.street) }}
+    <button type="button" id="searchCoord" class="btn btn-info">Chercher</button>
+</div>
+{{ form_row(locationForm.latitude) }}
+{{ form_row(locationForm.longitude) }}
+{{ form_row(locationForm.name) }}
+{{ form_end(locationForm) }}

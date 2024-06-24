@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Import Users</h2>
+
+    {{ form_start(uploadForm) }}
+    {{ form_widget(uploadForm) }}
+    <button>Ajouter</button>
+    {{ form_end(uploadForm) }}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
