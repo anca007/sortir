@@ -87,16 +87,17 @@ main {
     flex: 1;
 }
 
-/*nav ul {*/
-/*    display: flex;*/
-/*    list-style: none;*/
-/*    padding-left: 0;*/
-/*    margin: 5px;*/
-/*}*/
+nav ul {
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+    padding-left: 0;
+    margin: 5px;
+}
 
-/*nav li {*/
-/*    margin-right: 1rem; !*pourcentage de taille en fonction du zoom 1 rem = 10px pour zoom = 100%*!*/
-/*}*/
+nav li {
+    margin-right: 1rem; /*pourcentage de taille en fonction du zoom 1 rem = 10px pour zoom = 100%*/
+}
 
 
 label:not(.login-box label) {
@@ -104,7 +105,8 @@ label:not(.login-box label) {
     margin: 8px 5px 5px 5px;
 }
 
-input:not(.user-box input),
+
+input:not(.user-box input) input:not([type='checkbox']),
 select {
     margin-bottom: 1rem;
     box-sizing: border-box;
@@ -203,7 +205,8 @@ button {
 }
 
 #searchBlock{
-    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
     border: 2px solid burlywood;
     border-radius: 20px;
     padding: 5px;
@@ -223,6 +226,10 @@ img.action_icon {
     min-width: 25px;
     margin-right: 3px;
 }
+.space-evenly{
+    display: flex;
+    justify-content: space-evenly;
+}
 
 
 @keyframes flashAnimation {
@@ -236,7 +243,7 @@ img.action_icon {
 /********************************************************/
 /********************************************************/
 .table-wrapper{
-    margin: 10px 70px 70px;
+    /*margin: 10px 70px 70px;*/
     box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
 }
 
@@ -552,7 +559,7 @@ img.action_icon {
 
 a {
     font-family: "Bungee", cursive;
-    font-size: 2.5em;
+    font-size: 2em;
 }
 
 .link-one {

@@ -38,7 +38,7 @@ class UserType extends AbstractType
                             'image/jpg',
                             'image/jpeg'
                         ],
-                        'maxSize' => 7000,
+                        'maxSize' => '7m',
                         'mimeTypesMessage' => "C'est pas une image",
                         'maxSizeMessage' => "Trop grosse l'image, trop grosse !"
                     ])

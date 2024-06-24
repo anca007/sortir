@@ -2,10 +2,12 @@
 
 {% block body %}
 
-    <section>
-        {{ form_start(searchForm) }}
-        <div class="flex_div" id="searchBlock">
+    <section id="searchBlock">
+
+        <div class="space-evenly" >
+
             <div>
+                {{ form_start(searchForm) }}
                 {{ form_row(searchForm.campus) }}
                 {{ form_row(searchForm.name) }}
                 <div class="flex_div">
@@ -33,9 +35,9 @@
                 </div>
 
             </div>
-            <div>
-                <button name="searchActivityButton">Rechercher</button>
-            </div>
+        </div>
+        <div class="flex_div center">
+            <button name="searchActivityButton">Rechercher</button>
         </div>
         {{ form_end(searchForm) }}
     </section>
