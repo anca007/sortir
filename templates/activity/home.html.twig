@@ -4,7 +4,7 @@
 
     <section id="searchBlock">
 
-        <div class="space-evenly" >
+        <div class="space-evenly">
 
             <div>
                 {{ form_start(searchForm) }}
@@ -37,15 +37,30 @@
             </div>
         </div>
         <div class="flex_div center">
-            <button name="searchActivityButton">Rechercher</button>
+            <button name="searchButton" value="submit">Rechercher</button>
         </div>
         {{ form_end(searchForm) }}
     </section>
+
+
+    {# Création des paramètres de l'url  de recherche afin de les donner au lien pour changer de page et conserver les ritères de recherches #}
+{#    {% set queryParams =#}
+{#        {#}
+{#            'searchActivity[campus]': searchActivity.campus|default(''),#}
+{#            'searchActivity[name]': searchActivity.name|default(''),#}
+{#            'searchActivity[startDate]': searchActivity.startDate|default(''),#}
+{#            'searchActivity[endDate]': searchActivity.endDate|default(''),#}
+{#            'searchActivity[isNotParticipant]': searchActivity.isNotParticipant|default(''),#}
+{#            'searchActivity[isParticipant]': searchActivity.isParticipant|default(''),#}
+{#            'searchActivity[organiser]' : searchActivity.organiser|default(''),#}
+{#            'searchActivity[oldActivity]' : searchActivity.oldActivity|default('')#}
+{#        } %}#}
+
     <section class="table-wrapper">
         <div class="flex_div flex_between">
             {% if currentPage > 1 %}
                 <a class="link_button"
-                   href="{{ path('activity_home', {'page' : currentPage - 1, 'searchActivity' : app.request.query.get('searchActivity')}) }}">Page
+                   href="{{ path('activity_home', {'page' : currentPage -1 }) }}?{{app.request.queryString | replace({'submit' : ''}) }}">Page
                     précedente</a>
             {% endif %}
             {% if currentPage < maxPage %}
@@ -53,7 +68,7 @@
                     <div></div>
                 {% endif %}
                 <a class="link_button"
-                   href="{{ path('activity_home', {'page' : currentPage + 1, 'searchActivity': app.request.query.get('searchActivity')}) }}">Page
+                   href="{{ path('activity_home', {'page' : currentPage + 1 }) }}?{{app.request.queryString | replace({'submit' : ''}) }}">Page
                     suivante</a>
             {% endif %}
         </div>
@@ -89,7 +104,9 @@
                                 X
                             {% endif %}
                         </td>
-                        <td><a href="{{ path('user_detail', {'id': activity.organiser.id}) }}">{{ activity.organiser.firstname }} {{ activity.organiser.lastname }}</a></td>
+                        <td>
+                            <a href="{{ path('user_detail', {'id': activity.organiser.id}) }}">{{ activity.organiser.firstname }} {{ activity.organiser.lastname }}</a>
+                        </td>
                         <td>
                             <div class="flex_div">
                                 <div>

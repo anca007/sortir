@@ -26,18 +26,19 @@ class ActivityController extends AbstractController
     #[Route(path: '/{page}', name: 'activity_home', requirements: ['page' => '\d+'])]
     public function home(Request            $request,
                          ActivityRepository $activityRepository,
-                         ActivityState $activityState,
+                         ActivityState      $activityState,
                          int                $page = 1): Response
     {
 
         $activityState->update();
 
         $search = new SearchActivity();
+        $search->setCampus($this->getUser()->getCampus());
 
         //vérification de la page
         $page = ($page <= 0 ? 1 : $page);
         //si on a cliqué sur le bouton rechercher je remets la page 1
-        if ($request->query->get("searchActivityButton") === "") {
+        if($request->query->get('searchButton') == 'submit'){
             $page = 1;
         }
 
@@ -64,7 +65,8 @@ class ActivityController extends AbstractController
             'searchForm' => $searchForm->createView(),
             'currentPage' => $page,
             'maxPage' => $maxPage
-        ]);
+            ]
+        );
     }
 
 
@@ -194,11 +196,11 @@ class ActivityController extends AbstractController
     //    }
     #[Route(path: '/sortie/inscrire/{id}', name: 'activity_register')]
     public function register(
-        int $id,
-        ActivityRepository $activityRepository,
+        int                    $id,
+        ActivityRepository     $activityRepository,
         EntityManagerInterface $manager,
-        Request $request,
-        StateRepository $stateRepository
+        Request                $request,
+        StateRepository        $stateRepository
     ): Response
     {
         $activity = $activityRepository->find($id);
@@ -211,7 +213,7 @@ class ActivityController extends AbstractController
 
             $activity->addParticipant($this->getUser());
 
-            if(count($activity->getParticipants()) == $activity->getMaxRegistrationNumber()){
+            if (count($activity->getParticipants()) == $activity->getMaxRegistrationNumber()) {
                 $closedState = $stateRepository->findOneBy(['stateCode' => State::CLOSED]);
                 $activity->setState($closedState);
             }
@@ -229,11 +231,11 @@ class ActivityController extends AbstractController
     }
 
     #[Route(path: '/sortie/desinscrire/{id}', name: 'activity_unsubscribe')]
-    public function unsubscribe(int $id,
-                                ActivityRepository $activityRepository,
+    public function unsubscribe(int                    $id,
+                                ActivityRepository     $activityRepository,
                                 EntityManagerInterface $manager,
-                                StateRepository $stateRepository,
-                                Request $request): Response
+                                StateRepository        $stateRepository,
+                                Request                $request): Response
     {
         $activity = $activityRepository->find($id);
 
@@ -257,9 +259,9 @@ class ActivityController extends AbstractController
             $this->addFlash('warning', 'Vous ne pouvez pas vous désinscrire !');
         }
 
-        if($request->headers->get('referer')){
+        if ($request->headers->get('referer')) {
             return $this->redirect($request->headers->get('referer'));
-        }else{
+        } else {
             return $this->redirectToRoute('activity_home');
         }
 

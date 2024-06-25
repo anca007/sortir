@@ -28,9 +28,9 @@
                 <label for="password">Password</label>
             </div>
 
-            <div class="user-box">
-                <input id="rb" type="checkbox" name="_remember_me"/>
+            <div class="remember-me">
                 <label for="rb">Se souvenir de moi</label>
+                <input id="rb" type="checkbox" name="_remember_me"/>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"
                 >
             </div>

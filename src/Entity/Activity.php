@@ -48,7 +48,7 @@ class Activity
 
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Location::class)]
-    #[Assert\NotNull(message: 'Veuillez choisir un lieu')]
+    #[Assert\NotNull(message: 'Le lieu est obligatoire')]
     private ?Location $location;
 
     #[ORM\JoinColumn(nullable: false)]

@@ -4,24 +4,26 @@
 namespace App\Form\Model;
 
 
+use App\Entity\Campus;
+use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchActivity
 {
 
-    private $name;
-    private $campus;
+    private ?string $name = "";
+    private ?Campus $campus = null;
 
     #[Assert\LessThan(propertyPath: 'endDate', message: 'La date de début doit être inférieur à la date de fin !')]
-    private $startDate;
+    private ?\DateTimeInterface $startDate = null;
 
-    
+
     #[Assert\GreaterThan(propertyPath: 'startDate', message: 'La date de fin doit être supérieur à la date de début !')]
-    private $endDate;
-    private $organiser;
-    private $isParticipant;
-    private $isNotParticipant;
-    private $oldActivity;
+    private ?\DateTimeInterface $endDate = null;
+    private ?bool $organiser = null;
+    private ?bool $isParticipant = null;
+    private ?bool $isNotParticipant = null;
+    private ?bool $oldActivity = null;
 
     /**
      * @return mixed
@@ -150,6 +152,7 @@ class SearchActivity
     {
         $this->oldActivity = $oldActivity;
     }
+
 
 
 

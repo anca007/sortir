@@ -119,7 +119,7 @@ class ActivityType extends AbstractType
             },
             'constraints' => [
                 new NotNull(
-                    [], "Veuillez choisir une ville")
+                    [], "La ville est obligatoire")
             ]
         ]);
 
@@ -164,6 +164,7 @@ class ActivityType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Activity::class,
+            'required' => false
         ]);
     }
 }

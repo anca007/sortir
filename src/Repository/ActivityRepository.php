@@ -67,7 +67,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
 
         if($searchActivity->getOldActivity()){
-            $qb->andWhere("state.stateCode = :stateCode")->setParameter('ifStateCode', State::IS_FINISHED);
+            $qb->andWhere("state.stateCode = :stateCode")->setParameter('stateCode', State::IS_FINISHED);
         }
 
         //récupération des sorties en création si organisateur
