@@ -38,7 +38,7 @@ class ActivityController extends AbstractController
         //vérification de la page
         $page = ($page <= 0 ? 1 : $page);
         //si on a cliqué sur le bouton rechercher je remets la page 1
-        if($request->query->get('searchButton') == 'submit'){
+        if ($request->query->get('searchButton') == 'submit') {
             $page = 1;
         }
 
@@ -60,11 +60,11 @@ class ActivityController extends AbstractController
         }
 
         return $this->render('activity/home.html.twig', [
-            'activities' => $results['activities'],
-            'maxActivities' => $results['maxActivitities'],
-            'searchForm' => $searchForm->createView(),
-            'currentPage' => $page,
-            'maxPage' => $maxPage
+                'activities' => $results['activities'],
+                'maxActivities' => $results['maxActivitities'],
+                'searchForm' => $searchForm->createView(),
+                'currentPage' => $page,
+                'maxPage' => $maxPage
             ]
         );
     }
@@ -165,7 +165,8 @@ class ActivityController extends AbstractController
 
             return $this->render('activity/edit.html.twig', [
                 'activityForm' => $activityForm->createView(),
-                'locationForm' => $locationForm->createView()
+                'locationForm' => $locationForm->createView(),
+                'activity' => $activity
             ]);
 
 
@@ -302,6 +303,31 @@ class ActivityController extends AbstractController
         return $this->render('activity/cancel.html.twig', [
             'activity' => $activity
         ]);
+    }
+
+    #[Route(path: '/sortie/supprimer/{id}', name: 'activity_delete')]
+    public function delete(
+        int                    $id,
+        ActivityRepository     $activityRepository,
+        EntityManagerInterface $entityManager
+    )
+    {
+
+
+        $activity = $activityRepository->find($id);
+
+        if (!$activity) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas !");
+        }
+
+        if ($this->isGranted(ActivityVoter::DELETE, $activity)) {
+
+            $entityManager->remove($activity);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La sortie a été supprimée !');
+        }
+        return $this->redirectToRoute('activity_home');
     }
 
 

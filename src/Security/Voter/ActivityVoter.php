@@ -14,12 +14,13 @@ class ActivityVoter extends Voter
     public const REGISTER = 'ACTIVITY_REGISTER';
     public const CANCEL = 'ACTIVITY_CANCEL';
     public const EDIT = 'ACTIVITY_EDIT';
+    public const DELETE = 'ACTIVITY_DELETE';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::QUIT, self::REGISTER, self::EDIT, self::CANCEL])
+        return in_array($attribute, [self::QUIT, self::REGISTER, self::EDIT, self::CANCEL, self::DELETE])
             && $subject instanceof Activity;
     }
 
@@ -62,6 +63,10 @@ class ActivityVoter extends Voter
                     return true;
                 }
                 break;
+            case self::DELETE:
+                if ($subject->getOrganiser() === $user && $subject->getState()->getStateCode() == State::CREATION){
+                    return true;
+                }
         }
 
         return false;

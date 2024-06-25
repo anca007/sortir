@@ -23,6 +23,10 @@ class   UserController extends AbstractController
     {
         $user = $userRepository->find($id);
 
+        if(!$user){
+            throw $this->createNotFoundException("Utilisateur inconnu !");
+        }
+
         return $this->render('user/detail.html.twig', [
             'user' => $user
         ]);

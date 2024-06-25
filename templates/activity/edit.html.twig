@@ -16,7 +16,11 @@
             Publier la sortie !
         {% endblock %}
     {% endembed %}
-
+    {% if is_granted('ACTIVITY_DELETE', activity) %}
+        <a href="{{ path('activity_delete', {'id': activity.id }) }}">
+            <button>Supprimer la sortie !</button>
+        </a>
+    {% endif %}
 
 {% endblock %}
 
