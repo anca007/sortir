@@ -5,8 +5,8 @@ namespace App\Utils\api;
 
 use App\Entity\City;
 
-const API_KEY = "4";
-const API_URL = "";
+const API_KEY = "AIzaSyCnL0R57xn7FQg6DCT0uKehQ6prVPuzxb4";
+const API_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
 
 class GeoCode
 {
@@ -17,6 +17,8 @@ class GeoCode
         $api_url = API_URL . "address=" . $address_encode . "&key=" . API_KEY;
 
         $coord = json_decode(file_get_contents($api_url));
+
+       // dd($coord);
 
         $latitude = "";
         $longitude = "";

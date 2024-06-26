@@ -23,7 +23,7 @@ class City
     private ?string $name;
 
     #[ORM\Column(type: 'string', length: 20)]
-    #[Groups(['city'])]
+    #[Groups(['city', 'location'])]
     private ?string $zipcode;
 
     #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'city')]

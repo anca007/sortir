@@ -8,10 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(path: '/api/city', name: 'api_city_')]
 class CityController extends AbstractController
 {
-    #[Route(path: '/sortie/ajax-zipcode', name: 'activity_get_cities')]
-    public function getCities(Request $request, CityRepository $cityRepository): Response
+    #[Route(path: '', name: 'all')]
+    public function retrieveAll(Request $request, CityRepository $cityRepository): Response
     {
 
         $data = json_decode($request->getContent());

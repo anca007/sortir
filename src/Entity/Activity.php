@@ -20,16 +20,16 @@ class Activity
     #[Assert\NotBlank(message: 'Veuillez remplir le nom de la sortie')]
     private ?string $name;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $startDate;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $duration;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $dateLimitForRegistration;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $maxRegistrationNumber;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -82,7 +82,7 @@ class Activity
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    public function setStartDate(?\DateTimeInterface $startDate): self
     {
         $this->startDate = $startDate;
 
@@ -94,7 +94,7 @@ class Activity
         return $this->duration;
     }
 
-    public function setDuration(int $duration): self
+    public function setDuration(?int $duration): self
     {
         $this->duration = $duration;
 
@@ -106,7 +106,7 @@ class Activity
         return $this->dateLimitForRegistration;
     }
 
-    public function setDateLimitForRegistration(\DateTimeInterface $dateLimitForRegistration): self
+    public function setDateLimitForRegistration(?\DateTimeInterface $dateLimitForRegistration): self
     {
         $this->dateLimitForRegistration = $dateLimitForRegistration;
 
@@ -118,7 +118,7 @@ class Activity
         return $this->maxRegistrationNumber;
     }
 
-    public function setMaxRegistrationNumber(int $maxRegistrationNumber): self
+    public function setMaxRegistrationNumber(?int $maxRegistrationNumber): self
     {
         $this->maxRegistrationNumber = $maxRegistrationNumber;
 

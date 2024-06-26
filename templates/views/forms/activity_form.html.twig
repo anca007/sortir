@@ -1,7 +1,7 @@
 <div class="flex_div">
     <div>
         {{ form_start(activityForm) }}
-        {{ form_row(activityForm.campus)}}
+        {{ form_row(activityForm.campus) }}
         {{ form_row(activityForm.name) }}
         {{ form_row(activityForm.startDate) }}
         {{ form_row(activityForm.dateLimitForRegistration) }}
@@ -10,12 +10,22 @@
         {{ form_row(activityForm.description) }}
     </div>
     <div>
-        {{ form_row(activityForm.city, {'attr' : {'data-url': path('activity_get_locations')}}) }}
+        {{ form_row(activityForm.city, {'attr' : {'data-url': path('api_location_retrieve_by_city')}}) }}
         <div class="flex_div">
             {{ form_row(activityForm.location) }}
             <button type="button" id="openLocationModal" data-toggle="modal" data-target="#locationModal"
                     class="">+
             </button>
+        </div>
+        <div id="location-detail" data-url="{{ path('api_location_retrieve_by_id') }}">
+            <label for="address">Adresse</label>
+            <p id="address">{% if activity is defined %}{{ activity.location.street }}{% endif %}</p>
+            <label for="cp">CP</label>
+            <p id="cp">{% if activity is defined %}{{ activity.location.city.zipcode }}{% endif %}</p>
+            <label for="latitude">Latitude</label>
+            <p id="latitude">{% if activity is defined %}{{ activity.location.latitude }}{% endif %}</p>
+            <label for="longitude">Longitude</label>
+            <p id="longitude">{% if activity is defined %}{{ activity.location.longitude }}{% endif %}</p>
         </div>
     </div>
 </div>

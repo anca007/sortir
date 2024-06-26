@@ -1,6 +1,6 @@
 {{ form_start(locationForm, {'attr': {'id': 'locationForm'}}) }}
-{{ form_row(locationForm.zipCode, {'attr': {'data-url': path('activity_get_cities')}}) }}
-{{ form_row(locationForm.city, {'attr': {'data-url': path('activity_get_location')}}) }}
+{{ form_row(locationForm.zipCode, {'attr': {'data-url': path('api_city_all')}}) }}
+{{ form_row(locationForm.city, {'attr': {'data-url': path('api_location_find_geo_code')}}) }}
 <div class="flex_div">
     {{ form_row(locationForm.street) }}
     <button type="button" id="searchCoord" class="btn btn-info">Chercher</button>

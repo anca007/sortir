@@ -15,16 +15,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+#[Route(path: '/api/location', name: 'api_location_')]
 class LocationController extends AbstractController
 {
-    #[Route(path: '/lieu/créer', name: 'location_create')]
+    #[Route(path: '/create', name: 'create')]
     public function create(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response   {
-        
+
         $location = new Location();
         $locationForm = $this->createForm(LocationType::class, $location,[
         'method' => 'POST',
             //permet d'avoir l'attribut action avec l'url
-            'action' => $this->generateUrl('location_create')
+            'action' => $this->generateUrl('api_location_create')
         ]);
 
         $locationForm->handleRequest($request);
@@ -35,7 +36,7 @@ class LocationController extends AbstractController
             $entityManager->flush();
 
         }else{
-            return $this->render('views/forms/locationForm.html.twig', [
+            return $this->render('views/forms/location_form.html.twig', [
                 'locationForm' => $locationForm->createView()
             ]);
         }
@@ -43,7 +44,7 @@ class LocationController extends AbstractController
         return $this->json($location, 200, [], ["groups" => "location"]);
     }
 
-    #[Route(path: '/sortie/ajax-location', name: 'activity_get_location')]
+    #[Route(path: '/find-with-geocode', name: 'find_geo_code')]
     public function getLocationWithGeoCode(Request $request, CityRepository $cityRepository, GeoCode $geoCode): Response
     {
 
@@ -58,14 +59,25 @@ class LocationController extends AbstractController
         return $this->json($result);
     }
 
-    #[Route(path: '/sortie/ajax-locations', name: 'activity_get_locations')]
-    public function getLocationByCity(Request $request, LocationRepository $locationRepository){
+    #[Route(path: '/find-by-city', name: 'retrieve_by_city')]
+    public function retrieveByCity(Request $request, LocationRepository $locationRepository){
 
         $data = json_decode($request->getContent());
 
         $locations = $locationRepository->findBy(['city' => $data->city]);
 
-        return $this->json($locations, 200, [], ['groups' => 'location']);
+        return $this->json($locations, Response::HTTP_OK, [], ['groups' => 'location']);
+
+    }
+
+    #[Route(path: '/find-by-id', name: 'retrieve_by_id')]
+    public function retrieveOne(LocationRepository $locationRepository, Request $request){
+
+        $id = $request->get('id');
+
+        $location = $locationRepository->find($id);
+
+        return $this->json($location, Response::HTTP_OK, [], ['groups' => 'location']);
 
     }
 

@@ -7,6 +7,6 @@ import './bootstrap.js';
  */
 import './styles/normalize.css';
 import './styles/style.css';
-import './js/activityEvents;'
+// import './js/activityEvents.js;'
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

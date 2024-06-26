@@ -46,6 +46,27 @@ const getLocation = function (e) {
 
 }
 
+const getLocationById = async function (e) {
+    const url = $('#location-detail').data('url')
+    let response = await fetch(`${url}?id=${this.value}`)
+
+    if(response.ok){
+        let data = await response.json()
+
+        if(data){
+            $('#address').text(data.street)
+            $('#cp').text(data.city.zipcode)
+            $('#latitude').text(data.latitude)
+            $('#longitude').text(data.longitude)
+        }else{
+            $('#address').text("")
+            $('#cp').text("")
+            $('#latitude').text("")
+            $('#longitude').text("")
+        }
+    }
+}
+
 const createLocation = function (e) {
     e.preventDefault();
 
@@ -92,40 +113,42 @@ const createLocation = function (e) {
 
 }
 
-const getLocations = function (e) {
+const getLocations = async function (e) {
 
     let url = $(this).data('url');
     let city = $(this).val();
 
     //récupère les lieux par rapport à la ville
-    fetch(url, {method: 'POST', body: JSON.stringify({'city': city})})
-        .then(function (response) {
-            return response.json();
-        }).then(function (data) {
-        //on vide le select et on rajoute les lieux spécifiques au lieu
+    let response = await fetch(url, {method: 'POST', body: JSON.stringify({'city': city})})
+
+    if (response.ok) {
+
+        let data = await response.json()
         $('#activity_location').empty();
         $.each(data, function (idx, val) {
             $('#activity_location').append('<option value="' + val.id + '">' + val.name + '</option>')
         })
-    })
+        $('#activity_location').trigger('change');
+    }
 }
 
 
-const syncCitySelect = function (){
+const syncCitySelect = function () {
 
     let id = $('#location_city').val();
     $('#activity_city').val(id);
     $('#activity_city').trigger('change');
 }
 
-//ajout des events sur les boutons
-$('#location_zipCode').on('keyup', delay(getCities, 500));
-$('#searchCoord').on('click', getLocation);
-$('#locationCreate').on('click', createLocation);
-$('#location_city').on('change', syncCitySelect);
-
-$('#activity_city').on('change', getLocations);
-
+const init = function () {
+    //ajout des events sur les boutons
+    $('#location_zipCode').on('keyup', delay(getCities, 500));
+    $('#searchCoord').on('click', getLocation);
+    $('#locationCreate').on('click', createLocation);
+    $('#location_city').on('change', syncCitySelect);
+    $('#activity_city').on('change', getLocations);
+    $('#activity_location').on('change', getLocationById)
+}
 
 //méthode permettant de ne pas lancer tout de suite un évenement
 function delay(fn, ms) {
@@ -135,5 +158,8 @@ function delay(fn, ms) {
         timer = setTimeout(fn.bind(this, ...args), ms || 0)
     }
 }
+
+
+window.onload = init
 
 

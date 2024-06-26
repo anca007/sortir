@@ -80,7 +80,7 @@ class ActivityController extends AbstractController
         $locationForm = $this->createForm(LocationType::class, $location, [
             'method' => 'POST',
             //permet d'avoir l'attribut action avec l'url
-            'action' => $this->generateUrl('location_create')
+            'action' => $this->generateUrl('api_location_create')
         ]);
 
 
@@ -138,7 +138,7 @@ class ActivityController extends AbstractController
             $locationForm = $this->createForm(LocationType::class, $location, [
                 'method' => 'POST',
                 //permet d'avoir l'attribut action avec l'url
-                'action' => $this->generateUrl('location_create')
+                'action' => $this->generateUrl('api_location_create')
             ]);
 
             $activityForm->handleRequest($request);
@@ -187,11 +187,11 @@ class ActivityController extends AbstractController
     //
     //        $data = json_decode($request->getContent());
     //
-    //        $activity = $activityRepository->find($data->activity_id);
+    //        $location = $activityRepository->find($data->activity_id);
     //
-    //        $activityForm = $this->createForm(ActivityType::class, $activity);
+    //        $activityForm = $this->createForm(ActivityType::class, $location);
     //
-    //        return $this->render('views/forms/activityForm.html.twig', [
+    //        return $this->render('views/forms/activity_form.html.twig', [
     //            'activityForm' => $activityForm->createView()
     //        ]);
     //    }
@@ -301,7 +301,7 @@ class ActivityController extends AbstractController
         }
 
         return $this->render('activity/cancel.html.twig', [
-            'activity' => $activity
+            'location' => $activity
         ]);
     }
 

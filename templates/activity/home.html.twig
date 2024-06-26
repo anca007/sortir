@@ -44,37 +44,40 @@
 
 
     {# Création des paramètres de l'url  de recherche afin de les donner au lien pour changer de page et conserver les ritères de recherches #}
-{#    {% set queryParams =#}
-{#        {#}
-{#            'searchActivity[campus]': searchActivity.campus|default(''),#}
-{#            'searchActivity[name]': searchActivity.name|default(''),#}
-{#            'searchActivity[startDate]': searchActivity.startDate|default(''),#}
-{#            'searchActivity[endDate]': searchActivity.endDate|default(''),#}
-{#            'searchActivity[isNotParticipant]': searchActivity.isNotParticipant|default(''),#}
-{#            'searchActivity[isParticipant]': searchActivity.isParticipant|default(''),#}
-{#            'searchActivity[organiser]' : searchActivity.organiser|default(''),#}
-{#            'searchActivity[oldActivity]' : searchActivity.oldActivity|default('')#}
-{#        } %}#}
+    {#    {% set queryParams = #}
+    {#        { #}
+    {#            'searchActivity[campus]': searchActivity.campus|default(''), #}
+    {#            'searchActivity[name]': searchActivity.name|default(''), #}
+    {#            'searchActivity[startDate]': searchActivity.startDate|default(''), #}
+    {#            'searchActivity[endDate]': searchActivity.endDate|default(''), #}
+    {#            'searchActivity[isNotParticipant]': searchActivity.isNotParticipant|default(''), #}
+    {#            'searchActivity[isParticipant]': searchActivity.isParticipant|default(''), #}
+    {#            'searchActivity[organiser]' : searchActivity.organiser|default(''), #}
+    {#            'searchActivity[oldActivity]' : searchActivity.oldActivity|default('') #}
+    {#        } %} #}
 
-    <section class="table-wrapper">
+    <section class="">
         <div class="flex_div flex_between">
             {% if currentPage > 1 %}
                 <a class="link_button"
-                   href="{{ path('activity_home', {'page' : currentPage -1 }) }}?{{app.request.queryString | replace({'submit' : ''}) }}">Page
+                   href="{{ path('activity_home', {'page' : currentPage -1 }) }}?{{ app.request.queryString | replace({'submit' : ''}) }}">Page
                     précedente</a>
+            {% else %}
+                <div></div>
             {% endif %}
+            <p>{{ maxActivities }} résultats</p>
             {% if currentPage < maxPage %}
                 {% if currentPage == 1 %}
                     <div></div>
                 {% endif %}
                 <a class="link_button"
-                   href="{{ path('activity_home', {'page' : currentPage + 1 }) }}?{{app.request.queryString | replace({'submit' : ''}) }}">Page
+                   href="{{ path('activity_home', {'page' : currentPage + 1 }) }}?{{ app.request.queryString | replace({'submit' : ''}) }}">Page
                     suivante</a>
             {% endif %}
         </div>
         {% if activities|length > 0 %}
 
-            <table class="fl-table">
+            <table class="fl-table table-wrapper">
                 <thead>
                 <tr>
                     <th>Nom de la sortie</th>
@@ -91,8 +94,8 @@
                 {% for activity in activities %}
                     <tr>
                         <td><a href="{{ path('activity_detail', {'id': activity.id}) }}">{{ activity.name |nl2br }}</a>
-                            {#                <button class="activity-ajax-edit" data-url="{{ path('activity_ajax_edit') }}" #}
-                            {#                        data-activity_id="{{ activity.id }}" data-toggle="modal" data-target="#activityEditModal">Modifier Ajax #}
+                            {#                <button class="location-ajax-edit" data-url="{{ path('activity_ajax_edit') }}" #}
+                            {#                        data-activity_id="{{ location.id }}" data-toggle="modal" data-target="#activityEditModal">Modifier Ajax #}
                             {#                </button> #}
                         </td>
                         <td>{{ activity.startDate | date('Y-m-d') }}</td>
@@ -127,7 +130,7 @@
                                 </div>
                                 <div>
                                     {% if is_granted('ACTIVITY_EDIT', activity) %}
-                                        <a href="{{ path('activity_edit', {'activity': activity.id}) }}">
+                                        <a href="{{ path('activity_edit', {'location': activity.id}) }}">
                                             <img alt="Modifier la sortie" title="Modifier la sortie" class="action_icon"
                                                  src="{{ asset('img/edit.png') }}">
                                         </a>
@@ -151,10 +154,9 @@
         {% else %}
             Aucune sortie disponible
         {% endif %}
-        <p>{{ maxActivities }} résultats</p>
     </section>
 
-    {% include 'views/forms/activityEditAjaxModal.html.twig' %}
+    {% include 'modal/location/location_modal_edit.html.twig' %}
 
 {% endblock %}
 
@@ -181,7 +183,7 @@
         }
 
         const init = function () {
-            $('.activity-ajax-edit').each(function (idx, button) {
+            $('.location-ajax-edit').each(function (idx, button) {
                 $(this).on('click', getActivityForm);
             });
         }

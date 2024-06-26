@@ -12,8 +12,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FileUploader
 {
-    private $targetDirectory;
-    private $slugger;
+    private string $targetDirectory;
+    private SluggerInterface $slugger;
 
     public function __construct($targetDirectory, SluggerInterface $slugger)
     {
@@ -26,8 +26,7 @@ class FileUploader
         if($user){
             $fileName = $user->getFirstname().'-'.uniqid().'.'.$file->guessExtension();
             //suppression de l'ancienne image
-            $fs = new Filesystem();
-            $fs->remove($this->getTargetDirectory() . "/" . $user->getPhoto());
+            unlink( $this->getTargetDirectory() . DIRECTORY_SEPARATOR . $user->getPhoto());
         }else{
             $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFilename = $this->slugger->slug($originalFilename);
@@ -39,8 +38,6 @@ class FileUploader
         } catch (FileException $e) {
             return false;
         }
-
-
 
         return $fileName;
     }
