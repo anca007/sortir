@@ -5,8 +5,8 @@ namespace App\Utils\api;
 
 use App\Entity\City;
 
-const API_KEY = "AIzaSyCnL0R57xn7FQg6DCT0uKehQ6prVPuzxb4";
-const API_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+const API_KEY = "";
+const API_URL = "";
 
 class GeoCode
 {
