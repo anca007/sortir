@@ -98,6 +98,10 @@ const createLocation = function (e) {
             data = JSON.parse(data);
             //ajout du lieu nouvellement créé à la liste de base en le sélectionnant
             $('#activity_location').append("<option value='" + data.id + "' selected>" + data.name + "</option>");
+            $('#address').text(data.street)
+            $('#cp').text(data.city.zipcode)
+            $('#latitude').text(data.latitude)
+            $('#longitude').text(data.longitude)
             $('#locationModal').modal('hide');
             $('.modal-body input').val("");
 
