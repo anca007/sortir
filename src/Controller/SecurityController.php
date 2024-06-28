@@ -18,9 +18,16 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        $tokenProvider = $this->container->get('security.csrf.token_manager');
+        $token = $tokenProvider->getToken('authenticate')->getValue();
+
+        dump($tokenProvider);
+        dump($token);
+
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+
         ]);
     }
 

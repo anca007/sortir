@@ -301,7 +301,7 @@ class ActivityController extends AbstractController
         }
 
         return $this->render('activity/cancel.html.twig', [
-            'location' => $activity
+            'activity' => $activity
         ]);
     }
 
